@@ -1,73 +1,75 @@
 document.addEventListener("DOMContentLoaded", () => {
     const fileInput = document.getElementById("fileInput");
     const audioPlayer = document.getElementById("audioPlayer");
+    const videoPlayer = document.getElementById("videoPlayer");
     const nowPlaying = document.getElementById("nowPlaying");
     const playlist = document.getElementById("playlist");
     const recommendations = document.getElementById("recommendations");
+    const searchInput = document.getElementById("searchInput");
 
-    // Lista de canciones disponibles en static/audio
-    const availableSongs = [
-        "cancion1.mp3",
-        "cancion2.mp3",
-        "cancion_rock.mp3",
-        "cancion_pop.mp3",
-        "otra_cancion.mp3"
+    // Lista de archivos disponibles
+    const mediaFiles = [
+        { name: "cancion1", type: "audio", src: "/static/audio/cancion1.mp3" },
+        { name: "cancion2", type: "audio", src: "/static/audio/cancion2.mp3" },
+        { name: "video1", type: "video", src: "/static/video/video1.mp4" }
     ];
 
-    // Función para reproducir canción
-    function playSong(songName, songUrl) {
-        audioPlayer.src = songUrl;
-        audioPlayer.play();
-        nowPlaying.textContent = `Reproduciendo: ${songName}`;
-        showRecommendations(songName);
+    function playMedia(file) {
+        if(file.type === "audio") {
+            videoPlayer.style.display = "none";
+            audioPlayer.style.display = "block";
+            audioPlayer.src = file.src;
+            audioPlayer.play();
+        } else {
+            audioPlayer.style.display = "none";
+            videoPlayer.style.display = "block";
+            videoPlayer.src = file.src;
+            videoPlayer.play();
+        }
+        nowPlaying.textContent = `Reproduciendo: ${file.name}`;
+        showRecommendations(file);
     }
 
-    // Función IA: muestra canciones similares
-    function showRecommendations(currentSong) {
+    function showRecommendations(currentFile) {
         recommendations.innerHTML = "";
-        const keywords = currentSong.toLowerCase().split(/[_\s-]+/);
+        const keywords = currentFile.name.toLowerCase().split(/[_\s-]+/);
 
-        const suggested = availableSongs.filter(song => {
-            return song !== currentSong && keywords.some(kw => song.toLowerCase().includes(kw));
+        const suggested = mediaFiles.filter(f => {
+            return f.name !== currentFile.name && keywords.some(kw => f.name.toLowerCase().includes(kw));
         });
 
-        if (suggested.length === 0) {
+        if(suggested.length === 0){
             const li = document.createElement("li");
             li.textContent = "No hay recomendaciones";
             recommendations.appendChild(li);
         } else {
-            suggested.forEach(song => {
+            suggested.forEach(f => {
                 const li = document.createElement("li");
-                li.textContent = song;
-                li.addEventListener("click", () => {
-                    playSong(song, `/static/audio/${song}`);
-                });
+                li.textContent = f.name;
+                li.addEventListener("click", () => playMedia(f));
                 recommendations.appendChild(li);
             });
         }
     }
 
-    // Manejo de archivos subidos
-    fileInput.addEventListener("change", (event) => {
-        const file = event.target.files[0];
-        if (!file) return;
-
-        const url = URL.createObjectURL(file);
-        const fileName = file.name;
-
-        // Agregar a playlist
+    // Llenar playlist
+    mediaFiles.forEach(file => {
         const li = document.createElement("li");
-        li.textContent = fileName;
-        li.addEventListener("click", () => {
-            playSong(fileName, url);
-        });
+        li.textContent = file.name;
+        li.addEventListener("click", () => playMedia(file));
         playlist.appendChild(li);
-
-        playSong(fileName, url);
     });
 
-    // Inicia con la primera canción de availableSongs
-    if (availableSongs.length > 0) {
-        playSong(availableSongs[0], `/static/audio/${availableSongs[0]}`);
-    }
+    // Buscador
+    searchInput.addEventListener("input", () => {
+        const query = searchInput.value.toLowerCase();
+        playlist.innerHTML = "";
+        const filtered = mediaFiles.filter(f => f.name.toLowerCase().includes(query));
+        filtered.forEach(f => {
+            const li = document.createElement("li");
+            li.textContent = f.name;
+            li.addEventListener("click", () => playMedia(f));
+            playlist.appendChild(li);
+        });
+    });
 });

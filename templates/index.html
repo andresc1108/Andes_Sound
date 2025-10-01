@@ -1,36 +1,23 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Andes Sound</title>
-    <link rel="stylesheet" href="/static/css/style.css">
-</head>
-<body>
-    <header>
-        <h1>Andes Sound 🎵</h1>
-    </header>
+<header>
+    <img src="/static/assets/logo.png" alt="Logo" class="logo">
+    <h1>Andes Sound 🎵</h1>
+    <input type="text" id="searchInput" placeholder="Buscar canciones o videos...">
+</header>
 
-    <main>
-        <section id="player-section">
-            <p id="nowPlaying">Selecciona una canción</p>
-            <audio id="audioPlayer" controls></audio>
-        </section>
+<main>
+    <section id="player-section">
+        <p id="nowPlaying">Selecciona una canción o video</p>
+        <audio id="audioPlayer" controls></audio>
+        <video id="videoPlayer" controls width="100%" style="display:none;"></video>
+    </section>
 
-        <section id="file-section">
-            <input type="file" id="fileInput" accept="audio/*">
-        </section>
+    <section id="playlist-section">
+        <h2>Playlist</h2>
+        <ul id="playlist"></ul>
+    </section>
 
-        <section id="playlist-section">
-            <ul id="playlist"></ul>
-        </section>
-
-        <section id="recommendation-section">
-            <h2>Recomendaciones:</h2>
-            <ul id="recommendations"></ul>
-        </section>
-    </main>
-
-    <script src="/static/js/main.js"></script>
-</body>
-</html>
+    <section id="recommendation-section">
+        <h2>Recomendaciones</h2>
+        <ul id="recommendations"></ul>
+    </section>
+</main>
