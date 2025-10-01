@@ -73,12 +73,11 @@
       right: 0;
       background-color: #202020;
       padding: 10px;
-      display: flex;
-      align-items: center;
-      gap: 15px;
     }
-    audio {
+    iframe, audio {
       width: 100%;
+      height: 80px;
+      border: none;
     }
   </style>
 </head>
@@ -100,7 +99,9 @@
   </main>
 
   <div class="player">
-    <audio id="audioPlayer" controls></audio>
+    <!-- Aquí irá el reproductor -->
+    <div id="ytPlayer"></div>
+    <audio id="audioPlayer" controls style="display:none;"></audio>
   </div>
 
   <script>
@@ -110,12 +111,16 @@
 
     const audioPlayer = document.getElementById("audioPlayer");
     const fileInput = document.getElementById("fileInput");
+    let ytPlayer;
 
     // --- Reproducir música local ---
     fileInput.addEventListener("change", (event) => {
       const file = event.target.files[0];
       if (file) {
         const url = URL.createObjectURL(file);
+        if (ytPlayer) ytPlayer.stopVideo(); // parar YouTube si estaba sonando
+        document.getElementById("ytPlayer").innerHTML = ""; // ocultar iframe
+        audioPlayer.style.display = "block";
         audioPlayer.src = url;
         audioPlayer.play();
       }
@@ -147,11 +152,22 @@
           <p>${title}</p>
         `;
         div.addEventListener("click", () => {
-          // Cargar video como audio (versión simple: abre en YouTube)
-          window.open(`https://www.youtube.com/watch?v=${videoId}`, "_blank");
+          reproducirVideo(videoId);
         });
         contenedor.appendChild(div);
       });
+    }
+
+    // --- Reproducir video en el iframe ---
+    function reproducirVideo(videoId) {
+      audioPlayer.pause();
+      audioPlayer.style.display = "none";
+      document.getElementById("ytPlayer").innerHTML = `
+        <iframe width="100%" height="80" 
+          src="https://www.youtube.com/embed/${videoId}?autoplay=1" 
+          frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
+        </iframe>
+      `;
     }
 
     // --- Evento del botón buscar ---
