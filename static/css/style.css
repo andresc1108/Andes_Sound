@@ -1,0 +1,39 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #1a1a1a;
+    color: #f0f0f0;
+}
+
+header {
+    text-align: center;
+    padding: 1rem;
+    background: #ff4b2b;
+}
+
+header .logo {
+    width: 80px;
+    display: block;
+    margin: 0 auto 0.5rem;
+}
+
+main {
+    padding: 1rem;
+}
+
+#player-section, #file-section {
+    margin-bottom: 1rem;
+}
+
+#playlist li, #recommendations li {
+    list-style: none;
+    margin: 0.5rem 0;
+    padding: 0.5rem;
+    background: #333;
+    cursor: pointer;
+}
+
+#playlist li:hover, #recommendations li:hover {
+    background: #555;
+}

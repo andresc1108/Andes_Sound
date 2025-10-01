@@ -1,0 +1,73 @@
+document.addEventListener("DOMContentLoaded", () => {
+    const fileInput = document.getElementById("fileInput");
+    const audioPlayer = document.getElementById("audioPlayer");
+    const nowPlaying = document.getElementById("nowPlaying");
+    const playlist = document.getElementById("playlist");
+    const recommendations = document.getElementById("recommendations");
+
+    // Lista de canciones disponibles en static/audio
+    const availableSongs = [
+        "cancion1.mp3",
+        "cancion2.mp3",
+        "cancion_rock.mp3",
+        "cancion_pop.mp3",
+        "otra_cancion.mp3"
+    ];
+
+    // Función para reproducir canción
+    function playSong(songName, songUrl) {
+        audioPlayer.src = songUrl;
+        audioPlayer.play();
+        nowPlaying.textContent = `Reproduciendo: ${songName}`;
+        showRecommendations(songName);
+    }
+
+    // Función IA: muestra canciones similares
+    function showRecommendations(currentSong) {
+        recommendations.innerHTML = "";
+        const keywords = currentSong.toLowerCase().split(/[_\s-]+/);
+
+        const suggested = availableSongs.filter(song => {
+            return song !== currentSong && keywords.some(kw => song.toLowerCase().includes(kw));
+        });
+
+        if (suggested.length === 0) {
+            const li = document.createElement("li");
+            li.textContent = "No hay recomendaciones";
+            recommendations.appendChild(li);
+        } else {
+            suggested.forEach(song => {
+                const li = document.createElement("li");
+                li.textContent = song;
+                li.addEventListener("click", () => {
+                    playSong(song, `/static/audio/${song}`);
+                });
+                recommendations.appendChild(li);
+            });
+        }
+    }
+
+    // Manejo de archivos subidos
+    fileInput.addEventListener("change", (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const url = URL.createObjectURL(file);
+        const fileName = file.name;
+
+        // Agregar a playlist
+        const li = document.createElement("li");
+        li.textContent = fileName;
+        li.addEventListener("click", () => {
+            playSong(fileName, url);
+        });
+        playlist.appendChild(li);
+
+        playSong(fileName, url);
+    });
+
+    // Inicia con la primera canción de availableSongs
+    if (availableSongs.length > 0) {
+        playSong(availableSongs[0], `/static/audio/${availableSongs[0]}`);
+    }
+});

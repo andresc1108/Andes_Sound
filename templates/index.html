@@ -1,181 +1,36 @@
-```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Andes Music</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #0f0f0f;
-      color: white;
-    }
-    header {
-      display: flex;
-      align-items: center;
-      padding: 10px 20px;
-      background-color: #202020;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 20px;
-      color: #ff0000;
-    }
-    .search-bar {
-      margin-left: auto;
-      display: flex;
-      gap: 5px;
-    }
-    .search-bar input {
-      padding: 5px;
-      border: none;
-      border-radius: 2px;
-    }
-    .search-bar button {
-      padding: 6px 10px;
-      border: none;
-      background-color: #ff0000;
-      color: white;
-      cursor: pointer;
-    }
-    main {
-      padding: 20px;
-    }
-    .videos {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 15px;
-    }
-    .video {
-      background-color: #181818;
-      padding: 10px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: transform 0.2s;
-    }
-    .video:hover {
-      transform: scale(1.05);
-    }
-    .video img {
-      width: 100%;
-      border-radius: 8px;
-    }
-    .video p {
-      margin: 5px 0 0;
-      font-size: 14px;
-    }
-    .player {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background-color: #202020;
-      padding: 10px;
-    }
-    iframe, audio {
-      width: 100%;
-      height: 80px;
-      border: none;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Andes Sound</title>
+    <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-  <header>
-    <h1>🎵 Andes Music</h1>
-    <div class="search-bar">
-      <input type="text" id="buscarInput" placeholder="Buscar en YouTube Music...">
-      <button id="buscarBtn">Buscar</button>
-    </div>
-  </header>
+    <header>
+        <h1>Andes Sound 🎵</h1>
+    </header>
 
-  <main>
-    <h2>Resultados</h2>
-    <div class="videos" id="resultados"></div>
+    <main>
+        <section id="player-section">
+            <p id="nowPlaying">Selecciona una canción</p>
+            <audio id="audioPlayer" controls></audio>
+        </section>
 
-    <h2>Tu música local</h2>
-    <input type="file" id="fileInput" accept="audio/*">
-  </main>
+        <section id="file-section">
+            <input type="file" id="fileInput" accept="audio/*">
+        </section>
 
-  <div class="player">
-    <!-- Aquí irá el reproductor -->
-    <div id="ytPlayer"></div>
-    <audio id="audioPlayer" controls style="display:none;"></audio>
-  </div>
+        <section id="playlist-section">
+            <ul id="playlist"></ul>
+        </section>
 
-  <script>
-    // 🔑 Coloca tu API Key aquí
-    const API_KEY = "AIzaSyBNpp5pYvnZBcj5gfaYN8GaZfmn3u4wkKc";
-    const BASE_URL = "https://www.googleapis.com/youtube/v3/search";
+        <section id="recommendation-section">
+            <h2>Recomendaciones:</h2>
+            <ul id="recommendations"></ul>
+        </section>
+    </main>
 
-    const audioPlayer = document.getElementById("audioPlayer");
-    const fileInput = document.getElementById("fileInput");
-    let ytPlayer;
-
-    // --- Reproducir música local ---
-    fileInput.addEventListener("change", (event) => {
-      const file = event.target.files[0];
-      if (file) {
-        const url = URL.createObjectURL(file);
-        if (ytPlayer) ytPlayer.stopVideo(); // parar YouTube si estaba sonando
-        document.getElementById("ytPlayer").innerHTML = ""; // ocultar iframe
-        audioPlayer.style.display = "block";
-        audioPlayer.src = url;
-        audioPlayer.play();
-      }
-    });
-
-    // --- Buscar videos en YouTube ---
-    async function searchVideos(query) {
-      try {
-        const response = await fetch(`${BASE_URL}?part=snippet&type=video&maxResults=8&q=${query}&key=${API_KEY}`);
-        const data = await response.json();
-        mostrarResultados(data.items);
-      } catch (error) {
-        console.error("Error buscando videos:", error);
-      }
-    }
-
-    function mostrarResultados(videos) {
-      const contenedor = document.getElementById("resultados");
-      contenedor.innerHTML = "";
-      videos.forEach(video => {
-        const videoId = video.id.videoId;
-        const thumb = video.snippet.thumbnails.medium.url;
-        const title = video.snippet.title;
-
-        const div = document.createElement("div");
-        div.classList.add("video");
-        div.innerHTML = `
-          <img src="${thumb}" alt="${title}">
-          <p>${title}</p>
-        `;
-        div.addEventListener("click", () => {
-          reproducirVideo(videoId);
-        });
-        contenedor.appendChild(div);
-      });
-    }
-
-    // --- Reproducir video en el iframe ---
-    function reproducirVideo(videoId) {
-      audioPlayer.pause();
-      audioPlayer.style.display = "none";
-      document.getElementById("ytPlayer").innerHTML = `
-        <iframe width="100%" height="80" 
-          src="https://www.youtube.com/embed/${videoId}?autoplay=1" 
-          frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>
-        </iframe>
-      `;
-    }
-
-    // --- Evento del botón buscar ---
-    document.getElementById("buscarBtn").addEventListener("click", () => {
-      let query = document.getElementById("buscarInput").value;
-      if (query) searchVideos(query);
-    });
-  </script>
+    <script src="/static/js/main.js"></script>
 </body>
 </html>
-```
