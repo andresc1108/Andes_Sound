@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const fileInput = document.getElementById("fileInput");
     const audioPlayer = document.getElementById("audioPlayer");
     const videoPlayer = document.getElementById("videoPlayer");
     const nowPlaying = document.getElementById("nowPlaying");
@@ -7,11 +6,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const recommendations = document.getElementById("recommendations");
     const searchInput = document.getElementById("searchInput");
 
-    // Lista de archivos disponibles
+    // Lista de archivos
     const mediaFiles = [
-        { name: "cancion1", type: "audio", src: "/static/audio/cancion1.mp3" },
-        { name: "cancion2", type: "audio", src: "/static/audio/cancion2.mp3" },
-        { name: "video1", type: "video", src: "/static/video/video1.mp4" }
+        { name: "Cancion 1", type: "audio", src: "/static/media/cancion1.mp3" },
+        { name: "Cancion 2", type: "audio", src: "/static/media/cancion2.mp3" },
+        { name: "Video 1", type: "video", src: "/static/media/video1.mp4" },
+        { name: "Video 2", type: "video", src: "/static/media/video2.mp4" }
     ];
 
     function playMedia(file) {
@@ -32,11 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function showRecommendations(currentFile) {
         recommendations.innerHTML = "";
-        const keywords = currentFile.name.toLowerCase().split(/[_\s-]+/);
-
-        const suggested = mediaFiles.filter(f => {
-            return f.name !== currentFile.name && keywords.some(kw => f.name.toLowerCase().includes(kw));
-        });
+        const suggested = mediaFiles.filter(f => f.name !== currentFile.name);
 
         if(suggested.length === 0){
             const li = document.createElement("li");
@@ -52,24 +48,21 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Llenar playlist
-    mediaFiles.forEach(file => {
-        const li = document.createElement("li");
-        li.textContent = file.name;
-        li.addEventListener("click", () => playMedia(file));
-        playlist.appendChild(li);
-    });
-
-    // Buscador
-    searchInput.addEventListener("input", () => {
-        const query = searchInput.value.toLowerCase();
+    function loadPlaylist(files) {
         playlist.innerHTML = "";
-        const filtered = mediaFiles.filter(f => f.name.toLowerCase().includes(query));
-        filtered.forEach(f => {
+        files.forEach(file => {
             const li = document.createElement("li");
-            li.textContent = f.name;
-            li.addEventListener("click", () => playMedia(f));
+            li.textContent = file.name;
+            li.addEventListener("click", () => playMedia(file));
             playlist.appendChild(li);
         });
+    }
+
+    searchInput.addEventListener("input", () => {
+        const query = searchInput.value.toLowerCase();
+        const filtered = mediaFiles.filter(f => f.name.toLowerCase().includes(query));
+        loadPlaylist(filtered);
     });
+
+    loadPlaylist(mediaFiles);
 });

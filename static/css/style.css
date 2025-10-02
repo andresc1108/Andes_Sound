@@ -18,22 +18,40 @@ header .logo {
     margin: 0 auto 0.5rem;
 }
 
+header input {
+    width: 80%;
+    padding: 0.5rem;
+    margin-top: 0.5rem;
+    border-radius: 5px;
+    border: none;
+}
+
 main {
     padding: 1rem;
 }
 
-#player-section, #file-section {
-    margin-bottom: 1rem;
+section {
+    margin-bottom: 1.5rem;
 }
 
-#playlist li, #recommendations li {
+ul {
+    padding: 0;
+}
+
+li {
     list-style: none;
     margin: 0.5rem 0;
     padding: 0.5rem;
     background: #333;
     cursor: pointer;
+    border-radius: 5px;
 }
 
-#playlist li:hover, #recommendations li:hover {
+li:hover {
     background: #555;
+}
+
+audio, video {
+    width: 100%;
+    margin-top: 0.5rem;
 }
