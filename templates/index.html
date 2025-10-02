@@ -4,37 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Andes Sound</title>
-    <link rel="stylesheet" href="/static/css/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
     <header>
-        <img src="/static/assets/logo.png" alt="Logo" class="logo">
-        <h1>Andes Sound 🎵</h1>
-        <input type="text" id="searchInput" placeholder="Buscar canciones o videos...">
+        <img src="{{ url_for('static', filename='assets/logo.png') }}" alt="Andes Sound Logo" id="logo">
+        <input type="text" id="search" placeholder="Buscar canciones o videos">
     </header>
 
-    <main>
-        <section id="player-section">
-            <p id="nowPlaying">Selecciona una canción o video</p>
-            <audio id="audioPlayer" controls></audio>
-            <video id="videoPlayer" controls width="100%" style="display:none;"></video>
-        </section>
+    <section id="videos">
+        <h2>Recomendaciones</h2>
+        <div id="video-list"></div>
+    </section>
 
-        <section id="playlist-section">
-            <h2>Playlist</h2>
-            <ul id="playlist"></ul>
-        </section>
-
-        <section id="recommendation-section">
-            <h2>Recomendaciones</h2>
-            <ul id="recommendations"></ul>
-        </section>
-
-        <section id="file-section">
-            <input type="file" id="fileInput" accept="audio/*,video/*">
-        </section>
-    </main>
-
-    <script src="/static/js/main.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
 </body>
 </html>

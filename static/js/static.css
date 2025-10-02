@@ -1,0 +1,30 @@
+const videos = [
+    {title: "Video 1", thumbnail: "/static/assets/videos/video1.png"},
+    {title: "Video 2", thumbnail: "/static/assets/videos/video2.png"},
+    {title: "Video 3", thumbnail: "/static/assets/videos/video3.png"}
+];
+
+const videoList = document.getElementById("video-list");
+const searchInput = document.getElementById("search");
+
+function displayVideos(list) {
+    videoList.innerHTML = "";
+    if(list.length === 0){
+        videoList.innerHTML = "<p>No se encontraron resultados</p>";
+        return;
+    }
+    list.forEach(video => {
+        const div = document.createElement("div");
+        div.className = "video-item";
+        div.innerHTML = `<img src="${video.thumbnail}" alt="${video.title}">
+                         <p>${video.title}</p>`;
+        videoList.appendChild(div);
+    });
+}
+
+searchInput.addEventListener("input", () => {
+    const filtered = videos.filter(v => v.title.toLowerCase().includes(searchInput.value.toLowerCase()));
+    displayVideos(filtered);
+});
+
+displayVideos(videos);
