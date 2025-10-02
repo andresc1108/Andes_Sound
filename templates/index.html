@@ -12,9 +12,21 @@
         <input type="text" id="search" placeholder="Buscar canciones o videos">
     </header>
 
+    <nav id="menu">
+        <button class="menu-btn">Inicio</button>
+        <button class="menu-btn">Explorar</button>
+        <button class="menu-btn">Biblioteca</button>
+        <button class="menu-btn">Recomendados</button>
+    </nav>
+
     <section id="videos">
-        <h2>Recomendaciones</h2>
+        <h2>Videos</h2>
         <div id="video-list"></div>
+    </section>
+
+    <section id="playlists">
+        <h2>Playlists generadas por IA</h2>
+        <div id="playlist-list"></div>
     </section>
 
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>

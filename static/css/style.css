@@ -1,18 +1,16 @@
-/* Fuente y reset básico */
 body {
     font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #121212; /* fondo oscuro */
-    color: #FFFFFF;            /* texto blanco */
+    background-color: #121212;
+    color: #FFFFFF;
 }
 
-/* Header con logo y buscador */
 header {
     display: flex;
     align-items: center;
     padding: 10px 20px;
-    background-color: #181818; /* header más oscuro */
+    background-color: #181818;
     border-bottom: 1px solid #282828;
 }
 
@@ -28,39 +26,50 @@ header {
     font-size: 16px;
     border-radius: 20px;
     border: none;
-    background-color: #282828; /* buscador oscuro */
+    background-color: #282828;
     color: #FFFFFF;
 }
 
 #search::placeholder {
-    color: #AAAAAA; /* placeholder gris claro */
+    color: #AAAAAA;
 }
 
-/* Sección de videos / recomendaciones */
-#videos {
+#menu {
+    display: flex;
+    gap: 15px;
+    padding: 10px 20px;
+    background-color: #181818;
+    border-bottom: 1px solid #282828;
+}
+
+.menu-btn {
+    padding: 8px 16px;
+    background-color: #282828;
+    border: none;
+    border-radius: 5px;
+    color: #FFFFFF;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s;
+}
+
+.menu-btn:hover {
+    background-color: #FF0000;
+}
+
+#videos, #playlists {
     padding: 20px;
 }
 
-#videos h2 {
-    color: #FFFFFF;
-    margin-bottom: 15px;
-}
-
-/* Lista de videos */
-#video-list {
+#video-list, #playlist-list {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
 }
 
-.video-item {
+.video-item, .playlist-item {
     width: 200px;
     cursor: pointer;
-    transition: transform 0.2s;
-}
-
-.video-item:hover {
-    transform: scale(1.05);
 }
 
 .video-item img {
@@ -69,20 +78,16 @@ header {
     border: 2px solid #282828;
 }
 
-.video-item p {
+.video-item p, .playlist-item h3, .playlist-item p {
     margin: 5px 0 0 0;
-    color: #FFFFFF;
-    font-weight: bold;
-    font-size: 14px;
 }
 
-/* Scrollbar oscuro opcional */
 ::-webkit-scrollbar {
     width: 8px;
 }
 
 ::-webkit-scrollbar-thumb {
-    background-color: #FF0000; /* rojo estilo YouTube */
+    background-color: #FF0000;
     border-radius: 4px;
 }
 
